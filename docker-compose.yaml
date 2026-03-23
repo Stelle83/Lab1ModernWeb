@@ -1,0 +1,9 @@
+services:
+  postgresql:
+    image: postgres:17
+    environment:
+      - 'POSTGRES_DB=library'
+      - 'POSTGRES_USER=user'
+      - 'POSTGRES_PASSWORD=pw'
+    ports:
+      - '5432:5432'
