@@ -2,14 +2,18 @@ package org.example.lab1modernweb.books;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BookRepository extends ListCrudRepository<Book, Long> {
+public interface BookRepository extends JpaRepository<Book, Long> {
+
+    Page<Book> findByTitleContainingIgnoreCaseAndAuthorContainingIgnoreCaseAndGenreContainingIgnoreCase(
+            String title, String author, String genre, Pageable pageable
+    );
 
 
     @Query("SELECT b from Book b where b.title like %:title%")

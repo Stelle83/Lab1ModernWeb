@@ -1,4 +1,5 @@
 @param java.util.List<org.example.lab1modernweb.books.BookDTO> books
+@param org.springframework.data.domain.Page<org.example.lab1modernweb.books.BookDTO> bookPage
 @param String title
 @param String author
 @param String genre
@@ -54,7 +55,6 @@
             <td>${book.getPublishedDate() != null ? book.getPublishedDate().toString() : ""}</td>
             <td>
                 <a href="/books/${book.getId()}/edit">Edit</a>
-
                 <form action="/books/${book.getId()}/delete" method="post" style="display:inline;">
                     <button type="submit">Delete</button>
                 </form>
@@ -63,6 +63,24 @@
     @endfor
     </tbody>
 </table>
+
+@if(bookPage.getTotalPages() > 1)
+    <div style="margin-top: 20px;">
+        @if(bookPage.hasPrevious())
+            <a href="/books?page=${bookPage.getNumber() - 1}&title=${title != null ? title : ""}&author=${author != null ? author : ""}&genre=${genre != null ? genre : ""}">
+                Previous
+            </a>
+        @endif
+
+        <span> Page ${bookPage.getNumber() + 1} of ${bookPage.getTotalPages()} </span>
+
+        @if(bookPage.hasNext())
+            <a href="/books?page=${bookPage.getNumber() + 1}&title=${title != null ? title : ""}&author=${author != null ? author : ""}&genre=${genre != null ? genre : ""}">
+                Next
+            </a>
+        @endif
+    </div>
+@endif
 
 </body>
 </html>

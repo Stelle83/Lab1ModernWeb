@@ -1,15 +1,12 @@
 package org.example.lab1modernweb.books;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BookService {
 
-    private static final Logger log = LoggerFactory.getLogger(BookService.class);
     private final BookRepository bookRepository;
     private final BookMapper bookMapper = new BookMapper();
 
@@ -17,17 +14,16 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<BookDTO> findAll() {
-        return bookRepository.findAll()
-                .stream()
-                .map(bookMapper::toDTO)
-                .toList();
-    }
+    public Page<BookDTO> search(String title, String author, String genre, Pageable pageable) {
+        String safeTitle = title == null ? "" : title;
+        String safeAuthor = author == null ? "" : author;
+        String safeGenre = genre == null ? "" : genre;
 
-    public BookDTO findById(Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book with id " + id + " not found"));
-        return bookMapper.toDTO(book);
+        return bookRepository
+                .findByTitleContainingIgnoreCaseAndAuthorContainingIgnoreCaseAndGenreContainingIgnoreCase(
+                        safeTitle, safeAuthor, safeGenre, pageable
+                )
+                .map(bookMapper::toDTO);
     }
 
     public void create(CreateBookDTO dto) {
@@ -58,24 +54,6 @@ public class BookService {
     }
 
     public void delete(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new BookNotFoundException("Book with id " + id + " not found");
-        }
         bookRepository.deleteById(id);
     }
-
-    public List<BookDTO> search(String title, String author, String genre) {
-        String safeTitle = title == null ? "" : title;
-        String safeAuthor = author == null ? "" : author;
-        String safeGenre = genre == null ? "" : genre;
-
-        return bookRepository
-                .findByTitleContainingIgnoreCaseAndAuthorContainingIgnoreCaseAndGenreContainingIgnoreCase(
-                        safeTitle, safeAuthor, safeGenre
-                )
-                .stream()
-                .map(bookMapper::toDTO)
-                .toList();
-    }
-
 }

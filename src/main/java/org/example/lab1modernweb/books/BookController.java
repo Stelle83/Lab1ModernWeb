@@ -3,10 +3,12 @@ package org.example.lab1modernweb.books;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -16,7 +18,6 @@ public class BookController {
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
 
     private final BookService bookService;
-
 
     public BookController(BookService bookService) {
         log.info("BookController constructor");
@@ -28,9 +29,13 @@ public class BookController {
     public String listBooks(@RequestParam(required = false) String title,
                             @RequestParam(required = false) String author,
                             @RequestParam(required = false) String genre,
+                            @PageableDefault(size = 5, sort = "title") Pageable pageable,
                             Model model) {
 
-        model.addAttribute("books", bookService.search(title, author, genre));
+        Page<BookDTO> bookPage = bookService.search(title, author, genre, pageable);
+
+        model.addAttribute("bookPage", bookPage);
+        model.addAttribute("books", bookPage.getContent());
         model.addAttribute("title", title);
         model.addAttribute("author", author);
         model.addAttribute("genre", genre);
@@ -78,5 +83,4 @@ public class BookController {
         bookService.delete(id);
         return "redirect:/books";
     }
-
 }
