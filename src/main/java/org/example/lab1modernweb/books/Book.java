@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.Objects;
 
 @Entity

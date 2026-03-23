@@ -3,18 +3,15 @@ package org.example.lab1modernweb.books;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/books")
 public class BookController {
 
@@ -32,20 +29,20 @@ public class BookController {
     @GetMapping
     public String listBooks(Model model) {
         model.addAttribute("books", bookService.findAll());
-        return "book/list";
+        return "books/list";
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("book", new CreateBookDTO());
-        return "book/create";
+        return "books/create";
     }
 
     @PostMapping("/create")
     public String createBook(@Valid @ModelAttribute("book") CreateBookDTO dto,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "book/create";
+            return "books/create";
         }
 
         bookService.create(dto);
@@ -55,7 +52,7 @@ public class BookController {
     @GetMapping("/{id}/edit")
     public String showUpdateForm(@PathVariable Long id, Model model) {
         model.addAttribute("book", bookService.findUpdateDTOById(id));
-        return "book/update";
+        return "books/update";
     }
 
     @PostMapping("/{id}/edit")
@@ -63,7 +60,7 @@ public class BookController {
                              @Valid @ModelAttribute("book") UpdateBookDTO dto,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "book/update";
+            return "books/update";
         }
 
         bookService.update(id, dto);
@@ -75,45 +72,4 @@ public class BookController {
         bookService.delete(id);
         return "redirect:/books";
     }
-
-//    @GetMapping
-//    public List<Book> getBooks() {
-//        log.info("Real service class is: {} ", this.bookService.getClass().getName());
-//        return bookService.getAllBooks();
-//    }
-//
-//    @PostMapping
-//    public Book createBook(@RequestParam String title) {
-//        return bookService.saveBook(title);
-//    }
-//
-//    @GetMapping("/update/{id}")
-//    public void updateBookTitle(@PathVariable long id, @RequestParam String title) {
-//        bookService.updateTitle(id, title);
-//    }
-//
-//    @GetMapping("/page")
-//    public Page<Book> booksPaged(Pageable pageable) {
-//        return bookService.findBooks(pageable);
-//    }
-//
-//    @GetMapping("/books")
-//    public Page<Book> booksPagedWithDefaults(
-//            @PageableDefault(size = 2, sort = "title") Pageable pageable) {
-//        return bookService.findBooks(pageable);
-//    }
-//
-//    /**
-//     * Demonstrate transaction rollback.
-//     * URL: /books/bulk-update?ids=1,2&newTitle=Updated&fail=true
-//     */
-//    @PutMapping("/bulk-update")
-//    public String bulkUpdate(
-//            @RequestParam List<Long> ids,
-//            @RequestParam String newTitle,
-//            @RequestParam(defaultValue = "false") boolean fail) {
-//        bookService.updateTitlesInTransaction(ids, newTitle, fail);
-//        return "Bulk update successful!";
-//    }
-
 }
