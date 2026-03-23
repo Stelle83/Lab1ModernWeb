@@ -64,4 +64,18 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    public List<BookDTO> search(String title, String author, String genre) {
+        String safeTitle = title == null ? "" : title;
+        String safeAuthor = author == null ? "" : author;
+        String safeGenre = genre == null ? "" : genre;
+
+        return bookRepository
+                .findByTitleContainingIgnoreCaseAndAuthorContainingIgnoreCaseAndGenreContainingIgnoreCase(
+                        safeTitle, safeAuthor, safeGenre
+                )
+                .stream()
+                .map(bookMapper::toDTO)
+                .toList();
+    }
+
 }

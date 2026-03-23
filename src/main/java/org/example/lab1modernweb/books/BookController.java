@@ -25,8 +25,16 @@ public class BookController {
     }
 
     @GetMapping
-    public String listBooks(Model model) {
-        model.addAttribute("books", bookService.findAll());
+    public String listBooks(@RequestParam(required = false) String title,
+                            @RequestParam(required = false) String author,
+                            @RequestParam(required = false) String genre,
+                            Model model) {
+
+        model.addAttribute("books", bookService.search(title, author, genre));
+        model.addAttribute("title", title);
+        model.addAttribute("author", author);
+        model.addAttribute("genre", genre);
+
         return "books/list";
     }
 
@@ -70,4 +78,5 @@ public class BookController {
         bookService.delete(id);
         return "redirect:/books";
     }
+
 }
