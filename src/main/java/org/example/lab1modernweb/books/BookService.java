@@ -57,7 +57,4 @@ public class BookService {
         return bookRepository.findAllBy(pageable);
     }
 
-
-
-
 }
