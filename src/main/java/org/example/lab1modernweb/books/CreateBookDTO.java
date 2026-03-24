@@ -15,13 +15,11 @@ public class CreateBookDTO {
     @Size(max = 100, message = "Author cannot be longer than 100 characters")
     private String author;
 
-    @Size(max = 25, message = "Genre cannot be longer than 25 characters")
+    @NotBlank(message = "Genre cannot be empty")
+    @Size(max = 50, message = "Genre cannot be longer than 50 characters")
     private String genre;
 
     private LocalDate publishedDate;
-
-
-
 
     public CreateBookDTO() {
     }
@@ -32,6 +30,14 @@ public class CreateBookDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getGenre() {
@@ -49,13 +55,4 @@ public class CreateBookDTO {
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
     }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
 }

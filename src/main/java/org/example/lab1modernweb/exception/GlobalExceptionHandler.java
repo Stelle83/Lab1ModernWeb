@@ -1,5 +1,6 @@
-package org.example.lab1modernweb.books;
+package org.example.lab1modernweb.exception;
 
+import org.example.lab1modernweb.books.BookNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

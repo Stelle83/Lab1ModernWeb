@@ -6,21 +6,22 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class UpdateBookDTO {
+
     private Long id;
 
     @NotBlank(message = "Title cannot be empty")
     @Size(max = 100, message = "Title cannot be longer than 100 characters")
     private String title;
 
-    @Size(max = 25, message = "genre cannot be longer than 25 characters")
-    private String genre;
-
-    private LocalDate publishedDate;
-
     @NotBlank(message = "Author cannot be empty")
     @Size(max = 100, message = "Author cannot be longer than 100 characters")
     private String author;
 
+    @NotBlank(message = "Genre cannot be empty")
+    @Size(max = 50, message = "Genre cannot be longer than 50 characters")
+    private String genre;
+
+    private LocalDate publishedDate;
 
     public UpdateBookDTO() {
     }
@@ -41,6 +42,14 @@ public class UpdateBookDTO {
         this.title = title;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getGenre() {
         return genre;
     }
@@ -56,13 +65,4 @@ public class UpdateBookDTO {
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
     }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
 }
