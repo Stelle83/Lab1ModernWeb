@@ -46,6 +46,7 @@ public class BookController {
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("book", new CreateBookDTO());
+        model.addAttribute("bindingResult", null);
         return "books/create";
     }
 
@@ -63,6 +64,7 @@ public class BookController {
     @GetMapping("/{id}/edit")
     public String showUpdateForm(@PathVariable Long id, Model model) {
         model.addAttribute("book", bookService.findUpdateDTOById(id));
+        model.addAttribute("bindingResult", null);
         return "books/update";
     }
 
