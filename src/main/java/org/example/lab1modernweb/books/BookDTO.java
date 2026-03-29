@@ -1,11 +1,18 @@
 package org.example.lab1modernweb.books;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDate;
 
 public class BookDTO {
     private Long id;
+
+    @NotBlank
     private String title;
+
+    @NotBlank
     private String author;
+
     private String genre;
     private LocalDate publishedDate;
 
